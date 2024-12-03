@@ -1,0 +1,60 @@
+/* Chart Container */
+.chart-container {
+  width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+  display: flex;
+  flex-direction: column; /* Header and rows stack vertically */
+}
+
+/* Timeline Header */
+.timeline-header {
+  display: grid;
+  grid-template-columns: 250px repeat(var(--total-days), 100px); /* Fixed 250px for "Task Name", 100px for dates */
+  background: #f4f4f4;
+  border-bottom: 1px solid #ddd;
+  width: max-content; /* Prevent shrinking */
+}
+
+.timeline-cell {
+  text-align: center;
+  padding: 5px;
+  font-size: 0.9rem;
+  border-right: 1px solid blue; /* Debugging border */
+}
+
+.timeline-cell:last-child {
+  border-right: none;
+}
+
+/* Gantt Grid */
+.gantt-grid {
+  display: grid;
+  grid-template-columns: 250px repeat(var(--total-days), 100px); /* Match timeline header */
+  gap: 0;
+  width: max-content; /* Prevent shrinking */
+}
+
+/* Task Row */
+.task-row {
+  display: contents; /* Align task name and bars with the grid */
+}
+
+/* Task Name */
+.task-name {
+  grid-column: 1; /* Ensure task name is in the first column */
+  border: 1px solid black; /* Border for debugging task name column */
+  text-align: left;
+  padding: 5px;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Task Bar */
+.time-bar {
+  background-color: #4caf50;
+  border-radius: 4px;
+  height: 20px;
+  margin: auto 0;
+}
