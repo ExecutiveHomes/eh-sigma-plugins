@@ -1,7 +1,6 @@
 // import React from "react";
 // import ChartContainer from "./components/ChartContainer";
 // import { tasks } from "./data/tasks";
-// import "./components/GanttChart.css";
 //
 // const App = () => {
 //   return (
@@ -22,7 +21,7 @@ import React from "react";
 import ChartContainer from "./components/ChartContainer";
 import { tasks } from "./data/tasks";
 
-const App = () => {
+const GanttChart = () => {
   return (
     <div className="App">
       <header>
@@ -35,4 +34,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default GanttChart;
