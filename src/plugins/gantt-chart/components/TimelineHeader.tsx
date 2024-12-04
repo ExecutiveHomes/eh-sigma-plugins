@@ -1,8 +1,8 @@
 import React from "react";
-import "../styles/GanttChart.css";
-import { TimelineHeaderProps } from "../types/types";
+import "../GanttChart.css";
+import { TimelineHeaderProps } from "../types";
 
-const TimelineHeader: React.FC<TimelineHeaderProps> = ({
+export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   chartStartDate,
   totalDays,
 }) => {
@@ -43,5 +43,3 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
     </div>
   );
 };
-
-export default TimelineHeader;

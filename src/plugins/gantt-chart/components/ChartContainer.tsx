@@ -1,28 +1,23 @@
 import React, { useEffect, useRef } from "react";
-import TimelineHeader from "./TimelineHeader";
-import TaskRow from "./TaskRow";
-import "../styles/GanttChart.css";
-import { ChartContainerProps } from "../types/types";
+import { TimelineHeader, TaskRow } from "./";
+import "../GanttChart.css";
+import { ChartContainerProps } from "../types";
 
-const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
+export const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
 
-//   const normalizeDate = (date: Date): Date => {
-//     const offsetInMs = date.getTimezoneOffset() * 60000;
-//     return new Date(date.getTime() + offsetInMs);
-//   };
+  //   const normalizeDate = (date: Date): Date => {
+  //     const offsetInMs = date.getTimezoneOffset() * 60000;
+  //     return new Date(date.getTime() + offsetInMs);
+  //   };
 
   const earliestStartDate = new Date(
-    Math.min(
-      ...tasks.map((task) => new Date(task.startDate).getTime())
-    )
+    Math.min(...tasks.map((task) => new Date(task.startDate).getTime()))
   );
 
   const latestEndDate = new Date(
-    Math.max(
-      ...tasks.map((task) => new Date(task.endDate).getTime())
-    )
+    Math.max(...tasks.map((task) => new Date(task.endDate).getTime()))
   );
 
   const chartStartDate = new Date(earliestStartDate);
@@ -36,7 +31,10 @@ const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
   );
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--total-days", totalDays.toString());
+    document.documentElement.style.setProperty(
+      "--total-days",
+      totalDays.toString()
+    );
     if (headerRef.current && gridRef.current) {
       gridRef.current.style.width = `${headerRef.current.offsetWidth}px`;
     }
@@ -55,5 +53,3 @@ const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
     </div>
   );
 };
-
-export default ChartContainer;

@@ -1,8 +1,8 @@
 import React from "react";
-import "../styles/GanttChart.css";
-import { TaskRowProps } from "../types/types";
+import "../GanttChart.css";
+import { TaskRowProps } from "../types";
 
-const TaskRow: React.FC<TaskRowProps> = ({ task, chartStartDate }) => {
+export const TaskRow: React.FC<TaskRowProps> = ({ task, chartStartDate }) => {
   const taskStart = new Date(task.startDate).getTime();
   const taskEnd = new Date(task.endDate).getTime();
   const chartStart = chartStartDate.getTime();
@@ -23,5 +23,3 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, chartStartDate }) => {
     </div>
   );
 };
-
-export default TaskRow;
