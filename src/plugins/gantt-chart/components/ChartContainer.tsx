@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { TimelineHeader, TaskRow } from "./";
-import "../GanttChart.css";
+// import "../GanttChart.css";
 import { ChartContainerProps } from "../types";
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
@@ -13,11 +13,11 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({ tasks }) => {
   //   };
 
   const earliestStartDate = new Date(
-    Math.min(...tasks.map((task) => new Date(task.startDate).getTime()))
+    Math.min(...tasks.map((task) => new Date(task.start).getTime()))
   );
 
   const latestEndDate = new Date(
-    Math.max(...tasks.map((task) => new Date(task.endDate).getTime()))
+    Math.max(...tasks.map((task) => new Date(task.end).getTime()))
   );
 
   const chartStartDate = new Date(earliestStartDate);
