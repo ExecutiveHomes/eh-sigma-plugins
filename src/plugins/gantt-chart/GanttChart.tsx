@@ -1,5 +1,5 @@
 import React from "react";
-import { Gantt } from "wx-react-gantt";
+import { Gantt, GanttProps } from "wx-react-gantt"; // Import GanttProps
 import { Willow } from "wx-react-gantt";
 import "wx-react-gantt/dist/gantt.css"; // Import required styles
 import { client, useConfig, useElementData } from "@sigmacomputing/plugin";
@@ -57,11 +57,20 @@ export const GanttChart = () => {
     { unit: "day", step: 1, format: "d" },
   ];
 
+  const markers = [
+    {
+      start: new Date(), // Current date marker
+      text: "Today"
+    },
+  ];
+
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
       <Willow>
         <div style={{ height: "100%", overflowY: "auto" }}>
-          <Gantt tasks={tasks} scales={scales} />
+          <Gantt
+            {...{ tasks, scales, markers }} // Spread the props
+          />
         </div>
       </Willow>
     </div>
