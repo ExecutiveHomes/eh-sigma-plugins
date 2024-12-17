@@ -3,6 +3,8 @@ import { Gantt, GanttProps } from 'wx-react-gantt';
 import { Willow } from 'wx-react-gantt';
 import 'wx-react-gantt/dist/gantt.css'; // Import required styles
 import { client, useConfig, useElementData } from '@sigmacomputing/plugin';
+import "webix/webix.css";
+import "./components/webix-material-icons.css"; // Custom Material Icons mappings
 
 client.config.configureEditorPanel([
   {
@@ -94,7 +96,7 @@ export const GanttChart: React.FC = () => {
         );
       }
     }
-
+    flatTasks.sort((a, b) => a.start.getTime() - b.start.getTime());
     console.log("Processed tasks:", flatTasks);
     return flatTasks;
   }, [rawData]);
@@ -108,7 +110,7 @@ export const GanttChart: React.FC = () => {
     { id: "text", header: "Name", flexGrow: 3, align: "center", width: 150 },
     { id: "start", header: "Start date", flexGrow: 1, align: "center" },
     { id: "duration", header: "Duration", align: "center", flexGrow: 1 },
-    { id: "action", header: "+", width: 50, align: "center" }
+    { id: "action", header: "webixmdi-plus", width: 50, align: "center" }
   ];
 
   const taskTypes = [
@@ -128,16 +130,28 @@ export const GanttChart: React.FC = () => {
         { minCellWidth: 50, scales: [{ unit: "day", step: 1, format: "d MMM yyyy" }] },
       ],
     };
+    // const toolbarConfig = {
+    //   buttons: [
+    //     { id: "add-task", comp: "button", icon: "wxi-plus", text: "New Task", type: "primary" },
+    //     { id: "edit-task", comp: "icon", icon: "wxi-edit", text: "Edit Task" },
+    //     { id: "delete-task", comp: "icon", icon: "wxi-delete", text: "Delete Task" },
+    //     { id: "separator-1", comp: "separator", icon: "", text: "" },
+    //     { id: "move-task-up", comp: "icon", icon: "wxi-angle-up", text: "Move Up" },
+    //     { id: "move-task-down", comp: "icon", icon: "wxi-angle-down", text: "Move Down" },
+    //     { id: "zoom-in", comp: "icon", icon: "wxi-zoom-in", text: "Zoom In" },
+    //     { id: "zoom-out", comp: "icon", icon: "wxi-zoom-out", text: "Zoom Out" },
+    //   ],
+    // };
     const toolbarConfig = {
       buttons: [
-        { id: "add-task", comp: "button", icon: "wxi-plus", text: "New Task", type: "primary" },
-        { id: "edit-task", comp: "icon", icon: "wxi-edit", text: "Edit Task" },
-        { id: "delete-task", comp: "icon", icon: "wxi-delete", text: "Delete Task" },
+        { id: "add-task", comp: "button", icon: "webixmdi-plus", text: "New Task", type: "primary" },
+        { id: "edit-task", comp: "icon", icon: "webixmdi-pencil", text: "Edit Task" },
+        { id: "delete-task", comp: "icon", icon: "webixmdi-delete", text: "Delete Task" },
         { id: "separator-1", comp: "separator", icon: "", text: "" },
-        { id: "move-task-up", comp: "icon", icon: "wxi-angle-up", text: "Move Up" },
-        { id: "move-task-down", comp: "icon", icon: "wxi-angle-down", text: "Move Down" },
-        { id: "zoom-in", comp: "icon", icon: "wxi-zoom-in", text: "Zoom In" },
-        { id: "zoom-out", comp: "icon", icon: "wxi-zoom-out", text: "Zoom Out" },
+        { id: "move-task-up", comp: "icon", icon: "webixmdi-chevron-up", text: "Move Up" },
+        { id: "move-task-down", comp: "icon", icon: "webixmdi-chevron-down", text: "Move Down" },
+        { id: "zoom-in", comp: "icon", icon: "webixmdi-magnify-plus-outline", text: "Zoom In" },
+        { id: "zoom-out", comp: "icon", icon: "webixmdi-magnify-minus-outline", text: "Zoom Out" },
       ],
     };
 
@@ -149,6 +163,7 @@ export const GanttChart: React.FC = () => {
   zoomConfig,
   toolbar: toolbarConfig,
 });
+
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
       <Willow>

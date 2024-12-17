@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@sigmacomputing/plugin": "^1.0.6",
     "@svgr/plugin-svgo": "^8.1.0",
     "@svgr/webpack": "^8.1.0",
@@ -21,6 +22,7 @@
     "svgo": "^3.3.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
+    "webix": "^11.0.0",
     "wx-react-gantt": "^1.3.0"
   },
   "scripts": {
@@ -55,5 +57,14 @@
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.25.9",
     "eslint-config-react-app": "^7.0.1"
+  },
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+    "include": [
+      "src/**/*"
+    ]
   }
 }
