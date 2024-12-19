@@ -43,3 +43,5 @@ export interface TimelineHeaderProps {
 // Utility Types
 export type Nullable<T> = T | null; // Utility type for nullable values
 
+export interface zoom { zoom: boolean }
+

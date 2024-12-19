@@ -60,7 +60,7 @@
 // }
 
 declare module "wx-react-gantt" {
-  import React from "react";
+  import React, { MutableRefObject } from "react";
 
   interface Task {
     id: number | string; // Unique identifier for each task
@@ -112,6 +112,8 @@ declare module "wx-react-gantt" {
     levels: ZoomLevel[]; // List of zoom levels
   }
 
+  interface zoom { true }
+
   interface ToolbarButton {
     id: string; // Unique identifier
     comp: string; // Component type (e.g., "button", "icon")
@@ -125,6 +127,21 @@ declare module "wx-react-gantt" {
     buttons: ToolbarButton[]; // List of toolbar buttons
   }
 
+  interface ToolbarComponent {
+    items: items[]
+  }
+  interface items {
+            id?: string;
+            comp: 'button';
+            icon?: string;
+            css?: string;
+            text?: string;
+            type?: string;
+            layout?: string;
+            items?: [];
+            handler?: () => {}
+  }
+  
   interface Marker {
     id: string | number; // Unique marker ID
     start: Date; // Marker position
@@ -132,6 +149,7 @@ declare module "wx-react-gantt" {
   }
 
   interface GanttProps {
+    apiRef?: MutableRefObject<any>; // Ref for API access
     tasks?: Task[]; // List of tasks
     links?: Link[]; // List of task links (optional)
     scales?: Scale[]; // Time scales
@@ -143,12 +161,14 @@ declare module "wx-react-gantt" {
     readonly?: boolean; // If true, disables editing
     start?: Date; // Start date of the chart
     end?: Date; // End date of the chart
+    zoom?: boolean
   }
 
   interface WillowProps {
     children: React.ReactNode; // Content inside the Willow wrapper
   }
 
+  export const ToolbarComponent: React.FC<{ api: any }>;
   export const Gantt: React.FC<GanttProps>;
   export const Willow: React.FC<WillowProps>;
   export const WillowDark: React.FC<WillowProps>;

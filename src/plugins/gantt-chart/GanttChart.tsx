@@ -164,16 +164,24 @@ export const GanttChart: React.FC = () => {
   toolbar: toolbarConfig,
 });
 
+const markers = [
+    {
+      id: 0,
+      start: new Date(),
+      text: "Today",
+    },
+  ];
   return (
     <div style={{ width: "100%", height: "100vh", overflow: "hidden" }}>
       <Willow>
         <div style={{ height: "100%", overflowY: "auto" }}>
            <Gantt
             tasks={tasks}
+            markers={markers}
             scales={scales}
             columns={columns}
             taskTypes={taskTypes}
-            zoomConfig={zoomConfig}
+            zoom={true}
             toolbar={toolbarConfig}
           />
         </div>
