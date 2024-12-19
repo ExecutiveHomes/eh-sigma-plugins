@@ -113,10 +113,10 @@ export const GanttChart: React.FC = () => {
   ];
 
   const columns = [
-    { id: "text", header: "Name", flexGrow: 3, align: "center", width: 150 },
+    { id: "text", header: "Name", flexGrow: 3, align: "left", width: 150 },
     { id: "start", header: "Start date", flexGrow: 1, align: "center" },
     { id: "duration", header: "Duration", align: "center", flexGrow: 1 },
-    { id: "action", header: "webixmdi-plus", width: 50, align: "center" },
+    { id: "action", header: "", width: 50, align: "center" },
   ];
 
   const taskTypes = [
