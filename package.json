@@ -5,10 +5,6 @@
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@sigmacomputing/plugin": "^1.0.6",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.18.121",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
