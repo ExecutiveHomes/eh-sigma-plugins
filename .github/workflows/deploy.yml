@@ -40,5 +40,8 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Initialize Terraform
+      - name: Deploy to S3
         run: aws s3 cp build/ s3://eh-sigma-plugins-host/ --dryrun --recursive
+
+      - name: Invalidate cloudfront cache
+        run: aws create-invalidation --distribution-id E31RLQWQ6W0U89
