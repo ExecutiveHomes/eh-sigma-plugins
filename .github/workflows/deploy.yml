@@ -30,7 +30,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Configure AWS credentials for access to pipeline data
-        uses: aws-actions/configure-aws-credentials@v3.0.0
+        uses: aws-actions/configure-aws-credentials@v4.0.0
         with:
           aws-region: us-east-1
           role-skip-session-tagging: true
