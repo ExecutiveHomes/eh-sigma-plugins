@@ -1,0 +1,73 @@
+name: Continuous Integration
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  actions: write
+  contents: read
+  id-token: write
+  issues: read
+  packages: read
+  pull-requests: read
+  repository-projects: read
+
+jobs:
+  ci:
+    if: github.event.pull_request.draft == false && github.event.pull_request.state == 'open'
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Terraform
+        run:
+          sudo apt-get update -y && sudo apt-get install -y gnupg software-properties-common
+
+          wget -O- https://apt.releases.hashicorp.com/gpg | \
+            gpg --dearmor | \
+            sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+          gpg --no-default-keyring \
+            --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+            --fingerprint
+
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+            https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+            sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+          sudo apt update
+
+          sudo apt-get install terraform
+
+      - name: Configure AWS credentials for access to pipeline data
+        uses: aws-actions/configure-aws-credentials@v3.0.0
+        with:
+          aws-region: us-east-1
+          role-skip-session-tagging: true
+          role-to-assume: arn:aws:iam::354803805069:role/managed/eh.github.eh-sigma-plugins.role
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: npm run install
+
+      - name: Run build
+        run: npm run build
+
+      - name: Initialize Terraform
+        run: 
+          terraform init
+
+      - name: Terraform Plan
+        run: 
+          terraform plan -out tfout
+
+      - name: Apply Terraform
+        run: 
+          terraform apply tfout
