@@ -26,9 +26,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v3
-
       - name: Configure AWS credentials for access to pipeline data
         uses: aws-actions/configure-aws-credentials@v4.0.0
         with:
@@ -38,19 +35,10 @@ jobs:
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: npm run install
+        run: npm install
 
       - name: Run build
         run: npm run build
 
       - name: Initialize Terraform
-        run: 
-          terraform init
-
-      - name: Terraform Plan
-        run: 
-          terraform plan -out tfout
-
-      - name: Apply Terraform
-        run: 
-          terraform apply tfout
+        run: aws s3 cp build/ s3://eh-sigma-plugins-host/ --dryrun --recursive
