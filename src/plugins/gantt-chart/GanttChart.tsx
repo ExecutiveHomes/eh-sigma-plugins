@@ -36,45 +36,52 @@ export const GanttChart: React.FC = () => {
   const rawColumns = useElementColumns(dataSource)
   console.log("rawColumns:", rawColumns)
 
-  const startId = Object.entries(rawColumns).filter(([key, column]) => {
-    return column?.name === "DoM Window Start";
-  })?.[0][0];
-  console.log("start:", startId)
+  const startId =
+    Object.entries(rawColumns)
+      .find(([_, column]) => column?.name === "DoM Window Start")?.[0] ?? null;
+  console.log("start:", startId);
 
-  const endId = Object.entries(rawColumns).filter(([key, column]) => {
-    return column?.name === "DoM Window End";
-  })?.[0][0];
-  console.log("end:", endId)
+  const endId =
+    Object.entries(rawColumns)
+      .find(([_, column]) => column?.name === "DoM Window End")?.[0] ?? null;
+  console.log("end:", endId);
 
-  const addressId = Object.entries(rawColumns).filter(([key, column]) => {
-    return column?.name === "Address";
-  })?.[0][0];
-  console.log("address:", addressId)
+  const addressId =
+    Object.entries(rawColumns)
+      .find(([_, column]) => column?.name === "Address")?.[0] ?? null;
+  console.log("address:", addressId);
 
-  const cityElementId = Object.entries(rawColumns).filter(([key, column]) => {
-    return column?.name === "City";
-  })?.[0][0];
-  console.log("city:", cityElementId)
+  const cityElementId =
+    Object.entries(rawColumns)
+      .find(([_, column]) => column?.name === "City")?.[0] ?? null;
+  console.log("city:", cityElementId);
 
-  const durationId = Object.entries(rawColumns).filter(([key, column]) => {
-    return column?.name === "Window Duration";
-  })?.[0][0];
-  console.log("duration:", durationId)
+  const durationId =
+    Object.entries(rawColumns)
+      .find(([_, column]) => column?.name === "Window Duration")?.[0] ?? null;
+  console.log("duration:", durationId);
 
   const tasks: GanttProps["tasks"] = React.useMemo(() => {
+    // Validate required data and column IDs
     if (
       !rawData ||
+      !startId ||
+      !endId ||
+      !addressId ||
+      !cityElementId ||
+      !durationId ||
       !Array.isArray(rawData[cityElementId]) ||
       !Array.isArray(rawData[startId]) ||
       !Array.isArray(rawData[endId]) ||
-      !Array.isArray(rawData[durationId]) ||
       !Array.isArray(rawData[addressId]) ||
+      !Array.isArray(rawData[durationId]) ||
+      rawData[cityElementId].length === 0 ||
       rawData[cityElementId].length !== rawData[startId].length ||
       rawData[cityElementId].length !== rawData[endId].length ||
       rawData[cityElementId].length !== rawData[durationId].length ||
       rawData[cityElementId].length !== rawData[addressId].length
     ) {
-      console.warn("Missing or invalid data in rawData.");
+      console.warn("Missing or invalid data in rawData or column IDs.");
       return [];
     }
 
@@ -82,6 +89,7 @@ export const GanttChart: React.FC = () => {
     const flatTasks: GanttProps["tasks"] = [];
     const cityToIdMap = new Map<string, number>();
 
+    // Process tasks
     for (let i = 0; i < rawData[cityElementId].length; i++) {
       const city = rawData[cityElementId][i];
 
@@ -130,6 +138,7 @@ export const GanttChart: React.FC = () => {
         );
       }
     }
+
     flatTasks.sort((a, b) => a.start.getTime() - b.start.getTime());
     console.log("Processed tasks:", flatTasks);
     return flatTasks;
