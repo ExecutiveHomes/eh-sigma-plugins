@@ -161,7 +161,8 @@ declare module "wx-react-gantt" {
     readonly?: boolean; // If true, disables editing
     start?: Date; // Start date of the chart
     end?: Date; // End date of the chart
-    zoom?: boolean
+    zoom?: boolean;
+    cellWidth?: number;
   }
 
   interface WillowProps {

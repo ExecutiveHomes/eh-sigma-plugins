@@ -1,7 +1,7 @@
 import React from "react";
 import { Gantt, GanttProps } from "wx-react-gantt";
 import { Willow } from "wx-react-gantt";
-import { client, useConfig, useElementData } from "@sigmacomputing/plugin";
+import { client, useConfig, useElementData, useElementColumns } from "@sigmacomputing/plugin";
 import "wx-react-gantt/dist/gantt.css";
 
 client.config.configureEditorPanel([
@@ -33,18 +33,46 @@ export const GanttChart: React.FC = () => {
   const rawData = useElementData(dataSource);
   console.log("rawData:", rawData);
 
+  const rawColumns = useElementColumns(dataSource)
+  console.log("rawColumns:", rawColumns)
+
+  const startId = Object.entries(rawColumns).filter(([key, column]) => {
+    return column?.name === "DoM Window Start";
+  })?.[0][0];
+  console.log("start:", startId)
+
+  const endId = Object.entries(rawColumns).filter(([key, column]) => {
+    return column?.name === "DoM Window End";
+  })?.[0][0];
+  console.log("end:", endId)
+
+  const addressId = Object.entries(rawColumns).filter(([key, column]) => {
+    return column?.name === "Address";
+  })?.[0][0];
+  console.log("address:", addressId)
+
+  const cityElementId = Object.entries(rawColumns).filter(([key, column]) => {
+    return column?.name === "City";
+  })?.[0][0];
+  console.log("city:", cityElementId)
+
+  const durationId = Object.entries(rawColumns).filter(([key, column]) => {
+    return column?.name === "Window Duration";
+  })?.[0][0];
+  console.log("duration:", durationId)
+
   const tasks: GanttProps["tasks"] = React.useMemo(() => {
     if (
       !rawData ||
-      !Array.isArray(rawData.K2s5LX8fGS) ||
-      !Array.isArray(rawData["4Si_1lwDfD"]) ||
-      !Array.isArray(rawData.uqccOLP_8s) ||
-      !Array.isArray(rawData.sX1eqXlLoB) ||
-      !Array.isArray(rawData.C7P3RyuGHX) ||
-      rawData.K2s5LX8fGS.length !== rawData["4Si_1lwDfD"].length ||
-      rawData.K2s5LX8fGS.length !== rawData.uqccOLP_8s.length ||
-      rawData.K2s5LX8fGS.length !== rawData.sX1eqXlLoB.length ||
-      rawData.K2s5LX8fGS.length !== rawData.C7P3RyuGHX.length
+      !Array.isArray(rawData[cityElementId]) ||
+      !Array.isArray(rawData[startId]) ||
+      !Array.isArray(rawData[endId]) ||
+      !Array.isArray(rawData[durationId]) ||
+      !Array.isArray(rawData[addressId]) ||
+      rawData[cityElementId].length !== rawData[startId].length ||
+      rawData[cityElementId].length !== rawData[endId].length ||
+      rawData[cityElementId].length !== rawData[durationId].length ||
+      rawData[cityElementId].length !== rawData[addressId].length
     ) {
       console.warn("Missing or invalid data in rawData.");
       return [];
@@ -54,8 +82,8 @@ export const GanttChart: React.FC = () => {
     const flatTasks: GanttProps["tasks"] = [];
     const cityToIdMap = new Map<string, number>();
 
-    for (let i = 0; i < rawData.K2s5LX8fGS.length; i++) {
-      const city = rawData.K2s5LX8fGS[i];
+    for (let i = 0; i < rawData[cityElementId].length; i++) {
+      const city = rawData[cityElementId][i];
 
       // Add a city (summary) task if it doesn't already exist
       if (!cityToIdMap.has(city)) {
@@ -65,8 +93,8 @@ export const GanttChart: React.FC = () => {
         flatTasks.push({
           id: cityId,
           text: city,
-          start: new Date(rawData["4Si_1lwDfD"][i]),
-          end: new Date(rawData.uqccOLP_8s[i]),
+          start: new Date(rawData[startId][i]),
+          end: new Date(rawData[endId][i]),
           type: "summary", // Summary type for parent
         });
       }
@@ -74,10 +102,10 @@ export const GanttChart: React.FC = () => {
       // Add the child task
       flatTasks.push({
         id: taskIdCounter++, // Unique task ID
-        text: rawData.C7P3RyuGHX[i], // Task name
-        start: new Date(rawData["4Si_1lwDfD"][i]),
-        end: new Date(rawData.uqccOLP_8s[i]),
-        duration: rawData.sX1eqXlLoB[i],
+        text: rawData[addressId][i], // Task name
+        start: new Date(rawData[startId][i]),
+        end: new Date(rawData[endId][i]),
+        duration: rawData[durationId][i],
         progress: 0,
         type: "task", // Child task type
         parent: cityToIdMap.get(city), // Link to the summary task by ID
@@ -91,13 +119,13 @@ export const GanttChart: React.FC = () => {
         summaryTask.start = new Date(
           Math.min(
             summaryTask.start.getTime(),
-            new Date(rawData["4Si_1lwDfD"][i]).getTime()
+            new Date(rawData[startId][i]).getTime()
           )
         );
         summaryTask.end = new Date(
           Math.max(
             summaryTask.end.getTime(),
-            new Date(rawData.uqccOLP_8s[i]).getTime()
+            new Date(rawData[endId][i]).getTime()
           )
         );
       }
@@ -105,7 +133,7 @@ export const GanttChart: React.FC = () => {
     flatTasks.sort((a, b) => a.start.getTime() - b.start.getTime());
     console.log("Processed tasks:", flatTasks);
     return flatTasks;
-  }, [rawData]);
+  }, [rawData, startId, endId, addressId, cityElementId, durationId]);
 
   const scales = [
     { unit: "month", step: 1, format: "MMMM yyyy" },
@@ -213,6 +241,7 @@ export const GanttChart: React.FC = () => {
             taskTypes={taskTypes}
             zoom={true}
             toolbar={toolbarConfig}
+            cellWidth={50}
           />
         </div>
       </Willow>
