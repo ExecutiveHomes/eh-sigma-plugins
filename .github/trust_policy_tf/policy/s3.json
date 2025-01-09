@@ -1,0 +1,19 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "AllowAccessToStateBuckets",
+			"Action": [
+				"s3:AbortMultipartUpload",
+				"s3:Get*",
+				"s3:List*",
+				"s3:PutObject"
+			],
+			"Effect": "Allow",
+			"Resource": [
+        "arn:aws:s3:::eh-sigma-plugins-host/",
+        "arn:aws:s3:::eh-sigma-plugins-host/*"
+			]
+    }
+  ]
+}
