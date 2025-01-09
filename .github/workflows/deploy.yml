@@ -38,19 +38,16 @@ jobs:
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: npm run install
+        run: npm install
 
       - name: Run build
         run: npm run build
 
       - name: Initialize Terraform
-        run: 
-          terraform init
+        run: terraform init
 
       - name: Terraform Plan
-        run: 
-          terraform plan -out tfout
+        run: terraform plan -out tfout
 
       - name: Apply Terraform
-        run: 
-          terraform apply tfout
+        run: terraform apply tfout
