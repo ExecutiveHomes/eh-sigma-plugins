@@ -34,7 +34,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-skip-session-tagging: true
-          role-to-assume: arn:aws:iam::354803805069:role/managed/eh.github.eh-sigma-plugins.role
+          role-to-assume: arn:aws:iam::611524785219:role/managed/eh.github.eh-sigma-plugins.role
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
